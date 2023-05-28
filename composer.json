@@ -1,6 +1,8 @@
 {
     "name": "trim07/service-layer-sap",
     "type": "library",
+    "version": "1.0",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Trim07\\ServiceLayerSap\\": "src/"
