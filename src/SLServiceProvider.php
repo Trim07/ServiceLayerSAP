@@ -14,7 +14,7 @@ class SLServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . './config/service-layer.php' => config_path('service-layer.php'),
+            __DIR__ . '/../config/service-layer.php' => config_path('service-layer.php'),
         ], 'config');
     }
 
@@ -25,6 +25,10 @@ class SLServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if (file_exists(config_path('service-layer.php'))) {
+            $this->mergeConfigFrom(config_path('service-layer.php'), 'service-layer');
+        } else {
+            $this->mergeConfigFrom(__DIR__ . '/../config/service-layer.php', 'service-layer');
+        }
     }
 }
