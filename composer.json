@@ -14,5 +14,8 @@
             "email": "dxotabiladeiro1@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=7.2.3",
+        "laravel/framework": ">=5.5.*"
+    }
 }

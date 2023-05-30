@@ -2,6 +2,8 @@
 
 namespace Trim07\ServiceLayerSap;
 
+use ErrorException;
+
 /**
  * SAPClient manages access to SAP B1 Service Layer and provides methods to 
  * perform CRUD operations.
@@ -43,14 +45,16 @@ class SAPClient{
     /**
      * Creates a new SAP B1 session and returns a new instance of SAPb1\Client.
      * Throws SAPb1\SAPException if an error occurred.
+     * @throws ErrorException
+     * @throws SAPException
      */
-    public static function createSession(array $configOptions, string $username, string $password, string $company) : SAPClient{
+    public static function createSession(array $configOptions, string $username, string $password, string $company, int $lang = 3) : SAPClient{
         
         $config = new Config($configOptions);
 
         $request = new Request($config->getServiceUrl('Login'), $config->getSSLOptions());
         $request->setMethod('POST');
-        $request->setPost(['UserName' => $username, 'Password' => $password, 'CompanyDB' => $company]);
+        $request->setPost(['UserName' => $username, 'Password' => $password, 'CompanyDB' => $company, "Language" => $lang]);
         $response = $request->getResponse();
         
         if($response->getStatusCode() === 200){

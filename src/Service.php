@@ -48,11 +48,7 @@ class Service{
      * Updates an entity using $id. Returns true on success.
      * Throws SAPb1\SAPException if an error occurred.
      */
-    public function update($id, array $data, $returnResponse = false, $method = 'PATCH') : bool{
-        
-        if(is_string($id)){
-            $id = "'" . str_replace("'", "''", $id) . "'";
-        }
+    public function update(Int $id, array $data, $returnResponse = false, $method = 'PATCH'){
 
         $response = $this->doRequest($method, $data, '(' . $id . ')');
 
@@ -75,11 +71,7 @@ class Service{
      * Deletes an entity using $id. Returns true on success.
      * Throws SAPb1\SAPException if an error occurred.
      */
-    public function delete($id, $returnResponse = false) : bool{
-        
-        if(is_string($id)){
-            $id = "'" . str_replace("'", "''", $id) . "'";
-        }
+    public function delete(Int $id, $returnResponse = false) : bool{
 
         $response = $this->doRequest('DELETE', '(' . $id . ')');
 
@@ -98,11 +90,7 @@ class Service{
      * Performs an action on an entity using $id. Returns true on success.
      * Throws SAPb1\SAPException if an error occurred.
      */
-    public function action($id, string $action, $returnResponse = false) : bool{
-        
-        if(is_string($id)){
-            $id = "'" . str_replace("'", "''", $id) . "'";
-        }
+    public function action(Int $id, string $action, $returnResponse = false) : bool{
 
         $response = $this->doRequest('POST', null, '(' . $id . ')/' . $action);
 
