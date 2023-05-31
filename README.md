@@ -21,8 +21,10 @@ $config = [
 Create a new Service Layer session.
 
 ```php
-$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company');
+$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company', 'Language');
 ```
+
+You can see the language codes by going to [language codes documentation](https://github.com/user/repo/blob/branch/other_file.md)
 
 The static `createSession()` method will return a new instance of `SAPClient`. The SAPClient object provides a `service($name)` method which returns a new instance of Service with the specified name. Using this Service object you can perform CRUD actions.
 
@@ -33,7 +35,7 @@ The `queryBuilder()` method of the Service class returns a new instance of Query
 The following code sample shows how to filter Sales Orders using the Orders service.
 
 ```php
-$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company');
+$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company', 'Language');
 $orders = $sap->getService('Orders');
 
 $result = $orders->queryBuilder()
