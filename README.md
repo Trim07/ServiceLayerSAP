@@ -1,4 +1,4 @@
-# SAPb1
+# SapB1
 A simple and easy to use PHP library for SAP Business One Service Layer API.
 
 ## Usage
@@ -95,6 +95,30 @@ $result = $orders->update(19925, [
 ]);
 ```
 Note that the first argument to the update() method is the `id` of the entity to update. In the case of a Sales Order the `id` is the DocEntry field. If the update is successful a boolean true value is returned.
+
+### Canceling A Document
+
+The following code sample demonstrates how to cancel a document using the `action()` method of the Service.
+
+```php
+...
+$orders = $sap->getService('Orders');
+
+$result = $orders->action(19925, 'Cancel');
+```
+If the cancel is successful a boolean true value is returned.
+
+### Close A Document
+
+The following code sample demonstrates how to close a document using the `action()` method of the Service.
+
+```php
+...
+$orders = $sap->getService('Orders');
+
+$result = $orders->action(19925, 'Close');
+```
+If the close request is successful a boolean true value is returned.
 
 ### Adding Headers
 
