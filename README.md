@@ -28,6 +28,28 @@ You can see the language codes by going to [language codes documentation](https:
 
 The static `createSession()` method will return a new instance of `SAPClient`. The SAPClient object provides a `service($name)` method which returns a new instance of Service with the specified name. Using this Service object you can perform CRUD actions.
 
+### Making Queries
+
+To perform queries, we use the `'crossjoin(array)'` method, passing an array containing the tables that will be used in the relationship. Then we call the `'expand(array)'` method to select the columns we want and, finally, we call the `'where(filter)'` method that will do the relationship between the tables.
+
+The following code sample shows how to make `relationship` with Items and Warehouses.
+
+```php
+use Trim07\ServiceLayerSap\Filters\Equal;
+
+
+$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company', 'Language');
+$items = $sap->crossJoin(['Items', 'Items/ItemWarehouseInfoCollection', 'Warehouses'])
+            ->expand([
+                'Items' => ['ItemCode', 'ItemName'],
+                'Warehouses' => ['WarehouseCode', 'WarehouseName']])
+            ->where(new Equal('Items/ItemCode', 'Items/ItemWarehouseInfoCollection/ItemCode'))
+            ->where(new Equal('Items/ItemWarehouseInfoCollection/WarehouseCode', 'Warehouses/WarehouseCode'))
+            ->findAll()
+```
+
+
+
 ### Querying A Service
 
 The `queryBuilder()` method of the Service class returns a new instance of Query. The Query class allows you to use chainable methods to filter the requested service.
