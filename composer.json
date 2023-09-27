@@ -1,7 +1,7 @@
 {
     "name": "trim07/service-layer-sap",
     "type": "library",
-    "version": "1.0",
+    "version": "1.1",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -16,6 +16,8 @@
     ],
     "require": {
         "php": ">=7.2.3",
-        "laravel/framework": ">=5.5.*"
-    }
+        "laravel/framework": ">=5.5.5"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
