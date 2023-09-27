@@ -38,8 +38,8 @@ class SAPClient{
     /**
      * Returns a new instance of SAPb1\Query, which allows for cross joins.
      */
-    public function query($join, $headers = []) : Query{
-        return new Query($this->config, $this->session, '$crossjoin('. str_replace(' ', '', $join) . ')', $headers);
+    public function crossJoin($join, $headers = []) : Query{
+        return new Query($this->config, $this->session, '$crossjoin('. str_replace(' ', '', implode(",", $join)) . ')', $headers);
     }
 
     /**

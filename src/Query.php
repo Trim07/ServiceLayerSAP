@@ -87,8 +87,16 @@ class Query{
     /**
      * Specifies the navigation properties to expand.
      */
-    public function expand($name) : Query{
-        $this->query['expand'] = $name;
+    public function expand($expandArray) : Query{
+        $expandString = '';
+        $lastKey = array_key_last($expandArray);
+        foreach($expandArray as $key => $expandItems){
+            $toSelect = implode(',', $expandItems);
+            $expandString .= "{$key}(\$select={$toSelect})" . ($key !== $lastKey ? "," : "");
+        }
+        
+        //'Items($select=ItemCode,ItemName),Items/ItemWarehouseInfoCollection($select=InStock)'
+        $this->query['expand'] = $expandString;
         return $this;
     }
 
@@ -98,7 +106,7 @@ class Query{
     public function count() : int{
         return $this->doRequest('/$count');
     }
-    
+
     /** 
      * Returns a single result using the specified $id.
      */

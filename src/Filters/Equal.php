@@ -13,6 +13,6 @@ class Equal extends Filter{
     }
 
     public function execute(){
-        return $this->field . " eq " . $this->escape($this->value);
+        return $this->field . " eq " . $this->value;
     }
 }
