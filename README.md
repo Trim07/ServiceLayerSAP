@@ -1,4 +1,4 @@
-# SAPb1
+# SapB1
 A simple and easy to use PHP library for SAP Business One Service Layer API.
 
 ## Usage
@@ -21,10 +21,34 @@ $config = [
 Create a new Service Layer session.
 
 ```php
-$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company');
+$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company', 'Language');
 ```
 
+You can see the language codes by going to [language codes documentation](https://github.com/Trim07/Language-Codes-SAP)
+
 The static `createSession()` method will return a new instance of `SAPClient`. The SAPClient object provides a `service($name)` method which returns a new instance of Service with the specified name. Using this Service object you can perform CRUD actions.
+
+### Making Queries
+
+To perform queries, we use the `'crossjoin(array)'` method, passing an array containing the tables that will be used in the relationship. Then we call the `'expand(array)'` method to select the columns we want and, finally, we call the `'where(filter)'` method that will do the relationship between the tables.
+
+The following code sample shows how to make `relationship` with Items and Warehouses.
+
+```php
+use Trim07\ServiceLayerSap\Filters\Equal;
+
+
+$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company', 'Language');
+$items = $sap->crossJoin(['Items', 'Items/ItemWarehouseInfoCollection', 'Warehouses'])
+            ->expand([
+                'Items' => ['ItemCode', 'ItemName'],
+                'Warehouses' => ['WarehouseCode', 'WarehouseName']])
+            ->where(new Equal('Items/ItemCode', 'Items/ItemWarehouseInfoCollection/ItemCode'))
+            ->where(new Equal('Items/ItemWarehouseInfoCollection/WarehouseCode', 'Warehouses/WarehouseCode'))
+            ->findAll()
+```
+
+
 
 ### Querying A Service
 
@@ -33,7 +57,7 @@ The `queryBuilder()` method of the Service class returns a new instance of Query
 The following code sample shows how to filter Sales Orders using the Orders service.
 
 ```php
-$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company');
+$sap = SAPClient::createSession($config, 'SAP UserName', 'SAP Password', 'Company', 'Language');
 $orders = $sap->getService('Orders');
 
 $result = $orders->queryBuilder()
@@ -93,6 +117,30 @@ $result = $orders->update(19925, [
 ]);
 ```
 Note that the first argument to the update() method is the `id` of the entity to update. In the case of a Sales Order the `id` is the DocEntry field. If the update is successful a boolean true value is returned.
+
+### Canceling A Document
+
+The following code sample demonstrates how to cancel a document using the `action()` method of the Service.
+
+```php
+...
+$orders = $sap->getService('Orders');
+
+$result = $orders->action(19925, 'Cancel');
+```
+If the cancel is successful a boolean true value is returned.
+
+### Close A Document
+
+The following code sample demonstrates how to close a document using the `action()` method of the Service.
+
+```php
+...
+$orders = $sap->getService('Orders');
+
+$result = $orders->action(19925, 'Close');
+```
+If the close request is successful a boolean true value is returned.
 
 ### Adding Headers
 
