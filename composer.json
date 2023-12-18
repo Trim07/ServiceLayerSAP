@@ -1,0 +1,21 @@
+{
+    "name": "trim07/service-layer-sap",
+    "type": "library",
+    "version": "1.2",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Trim07\\ServiceLayerSap\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "trim07",
+            "email": "dxotabiladeiro1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.3",
+        "laravel/framework": ">=5.5.*"
+    }
+}
