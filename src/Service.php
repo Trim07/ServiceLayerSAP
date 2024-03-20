@@ -48,9 +48,9 @@ class Service{
      * Updates an entity using $id. Returns true on success.
      * Throws SAPb1\SAPException if an error occurred.
      */
-    public function update(Int $id, array $data, $returnResponse = false, $method = 'PATCH'){
+    public function update($id, array $data, $returnResponse = false, $method = 'PATCH'){
 
-        $response = $this->doRequest($method, $data, '(' . $id . ')');
+        $response = $this->doRequest($method, $data, '(' . $this->treatIdType($id) . ')');
 
         if($returnResponse){
             return $response;
@@ -71,9 +71,9 @@ class Service{
      * Deletes an entity using $id. Returns true on success.
      * Throws SAPb1\SAPException if an error occurred.
      */
-    public function delete(Int $id, $returnResponse = false) : bool{
+    public function delete($id, $returnResponse = false) : bool{
 
-        $response = $this->doRequest('DELETE', '(' . $id . ')');
+        $response = $this->doRequest('DELETE', [], '(' . $this->treatIdType($id) . ')');
 
         if($returnResponse){
             return $response;
@@ -92,7 +92,7 @@ class Service{
      */
     public function action(Int $id, string $action, $returnResponse = false) : bool{
 
-        $response = $this->doRequest('POST', null, '(' . $id . ')/' . $action);
+        $response = $this->doRequest('POST', null, '(' . $this->treatIdType($id) . ')/' . $action);
 
         if($returnResponse){
             return $response;
@@ -182,5 +182,22 @@ class Service{
         $request->setPost($postData);
 
         return $request->getResponse();
+    }
+
+    private function treatIdType($id)
+    {
+        switch (gettype($id)) {
+            case 'integer':
+                return (Integer)$id;
+                break;
+
+            case 'string':
+                return "'{$id}'";
+                break;
+            
+            default:
+            return (Integer)$id;
+                break;
+        }
     }
 }
